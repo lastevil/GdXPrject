@@ -1,0 +1,174 @@
+
+pika.png
+size: 2048, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+pika_ball
+  rotate: false
+  xy: 1390, 62
+  size: 138, 86
+  orig: 138, 90
+  offset: 0, 2
+  index: 2
+pika_ball
+  rotate: false
+  xy: 1530, 62
+  size: 138, 86
+  orig: 138, 88
+  offset: 0, 2
+  index: 4
+pika_ball
+  rotate: false
+  xy: 287, 29
+  size: 136, 91
+  orig: 138, 93
+  offset: 0, 0
+  index: 3
+pika_ball
+  rotate: false
+  xy: 1862, 82
+  size: 138, 86
+  orig: 140, 88
+  offset: 2, 2
+  index: 1
+pika_ball
+  rotate: false
+  xy: 1702, 65
+  size: 135, 90
+  orig: 140, 90
+  offset: 5, 0
+  index: 5
+pika_head
+  rotate: false
+  xy: 1105, 129
+  size: 146, 111
+  orig: 148, 113
+  offset: 0, 0
+  index: 2
+pika_head
+  rotate: false
+  xy: 719, 7
+  size: 109, 116
+  orig: 113, 120
+  offset: 2, 0
+  index: 1
+pika_jump
+  rotate: false
+  xy: 2, 18
+  size: 158, 110
+  orig: 160, 110
+  offset: 0, 0
+  index: 2
+pika_jump
+  rotate: false
+  xy: 353, 122
+  size: 150, 118
+  orig: 150, 118
+  offset: 0, 0
+  index: 1
+pika_jump
+  rotate: false
+  xy: 505, 120
+  size: 148, 120
+  orig: 148, 120
+  offset: 0, 0
+  index: 3
+pika_jump
+  rotate: false
+  xy: 1253, 95
+  size: 135, 145
+  orig: 135, 145
+  offset: 0, 0
+  index: 4
+pika_run
+  rotate: false
+  xy: 201, 127
+  size: 150, 113
+  orig: 150, 113
+  offset: 0, 0
+  index: 4
+pika_run
+  rotate: false
+  xy: 805, 127
+  size: 148, 113
+  orig: 150, 113
+  offset: 0, 0
+  index: 3
+pika_run
+  rotate: false
+  xy: 1547, 150
+  size: 153, 90
+  orig: 155, 90
+  offset: 0, 0
+  index: 2
+pika_run
+  rotate: false
+  xy: 1702, 157
+  size: 158, 83
+  orig: 163, 85
+  offset: 0, 0
+  index: 1
+pika_smash
+  rotate: false
+  xy: 2, 130
+  size: 197, 110
+  orig: 205, 110
+  offset: 7, 0
+  index: 3
+pika_smash
+  rotate: false
+  xy: 655, 125
+  size: 148, 115
+  orig: 150, 115
+  offset: 2, 0
+  index: 2
+pika_smash
+  rotate: false
+  xy: 955, 127
+  size: 148, 113
+  orig: 148, 115
+  offset: 0, 2
+  index: 1
+pika_stay
+  rotate: false
+  xy: 162, 17
+  size: 123, 108
+  orig: 123, 108
+  offset: 0, 0
+  index: 4
+pika_stay
+  rotate: false
+  xy: 425, 2
+  size: 75, 118
+  orig: 75, 118
+  offset: 0, 0
+  index: 3
+pika_stay
+  rotate: false
+  xy: 502, 10
+  size: 120, 108
+  orig: 120, 110
+  offset: 0, 0
+  index: 1
+pika_stay
+  rotate: false
+  xy: 624, 5
+  size: 93, 113
+  orig: 93, 113
+  offset: 0, 0
+  index: 2
+pika_tired
+  rotate: false
+  xy: 1390, 150
+  size: 155, 90
+  orig: 155, 90
+  offset: 0, 0
+  index: 1
+pika_tired
+  rotate: false
+  xy: 1862, 170
+  size: 159, 70
+  orig: 163, 70
+  offset: 0, 0
+  index: 2
