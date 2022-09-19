@@ -17,26 +17,12 @@ public class MyAtlasAnimation {
         animation = new Animation<>(1 / fps, this.atlas.findRegions(regionName));
         animation.setPlayMode(playMode);
     }
-
     public TextureRegion draw() {
         return animation.getKeyFrame(time);
     }
-
-    public int getAnimationFramesCount(){
-        return animation.getKeyFrameIndex(time);
-    }
-
-    public void setRegionName(String regionName, Animation.PlayMode playMode){
-        animation = null;
-        animation = new Animation<>(1/fps, this.atlas.findRegion(regionName));
-        animation.setPlayMode(playMode);
-    }
-
-
     public void setTime(float timeSet) {
         this.time += timeSet;
     }
-
     public void dispose() {
         this.atlas.dispose();
     }
