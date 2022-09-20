@@ -3,7 +3,6 @@ package com.mygdx.game.actions;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.api.MyInputProcessor;
-import com.mygdx.game.audio.GameSounds;
 
 import java.util.HashMap;
 
@@ -15,47 +14,38 @@ public class CoordinatesActions {
     }
 
     //не доогадаля как возвращать текущую
-    public HashMap<String, Body> doAction(float[] coordinate, GameSounds sounds, Body body) {
+    public HashMap<String, Body> doAction(float[] coordinate, Body body) {
         HashMap<String, Body> map = new HashMap();
         String action = "stay";
         if (inputProcessor.getOutString().isEmpty()) {
             action = "stay";
         }
         if (inputProcessor.getOutString().contains("Space")) {
-            stopSounds(sounds);
             body.applyForceToCenter(new Vector2(0f, 200f), true);
+            body.setGravityScale(6);
             action = "jump";
-            sounds.getSound("jump").play();
-        } else {
+        }
+        if (inputProcessor.getOutString().contains("A")) {
+            body.applyForceToCenter(new Vector2(-50, 0f), true);
+            body.setGravityScale(2);
+            action = "run";
+        }
+        if (inputProcessor.getOutString().contains("S")) {
+            body.setGravityScale(2);
+            action = "run";
+        }
+        if (inputProcessor.getOutString().contains("D")) {
+            body.setGravityScale(2);
+            body.applyForceToCenter(new Vector2(50, 0f), true);
+            action = "run";
+        }
+        if (inputProcessor.getOutString().contains("W")) {
+            body.setGravityScale(2);
+            action = "run";
+            coordinate[1]++;
 
-            if (inputProcessor.getOutString().contains("A")) {
-                body.applyForceToCenter(new Vector2(-50, 0f), true);
-
-                action = "run";
-                sounds.getSound("run").play();
-            }
-            if (inputProcessor.getOutString().contains("S")) {
-
-                action = "run";
-                sounds.getSound("run").play();
-            }
-            if (inputProcessor.getOutString().contains("D")) {
-                body.applyForceToCenter(new Vector2(50, 0f), true);
-                action = "run";
-                sounds.getSound("run").play();
-            }
-            if (inputProcessor.getOutString().contains("W")) {
-                sounds.getSound("run").play();
-                action = "run";
-                coordinate[1]++;
-            }
         }
         map.put(action, body);
         return map;
-    }
-
-    private void stopSounds(GameSounds sounds) {
-        sounds.stopSounds("jump");
-        sounds.stopSounds("run");
     }
 }

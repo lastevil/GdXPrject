@@ -23,14 +23,12 @@ import com.mygdx.game.animation.MyAnimations;
 import com.mygdx.game.animation.MyAtlasAnimation;
 import com.mygdx.game.api.MyInputProcessor;
 import com.mygdx.game.audio.BackgroundMusic;
-import com.mygdx.game.audio.GameSounds;
 
 import java.util.HashMap;
 
 public class MyGdxGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private BackgroundMusic backgroundMusic;
-    private GameSounds sounds;
     private MyInputProcessor myInputProcessor;
     private OrthographicCamera camera;
     private CoordinatesActions coordinatesActions;
@@ -43,19 +41,18 @@ public class MyGdxGame extends ApplicationAdapter {
     private Body body;
 
     private void setAnimationsTextures() {
-        animations.addAnimation("stay", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_stay", 10, Animation.PlayMode.LOOP));
-        animations.addAnimation("smash", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_smash", 10, Animation.PlayMode.LOOP));
-        animations.addAnimation("jump", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_jump", 7, Animation.PlayMode.LOOP));
-        animations.addAnimation("tired", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_tired", 10, Animation.PlayMode.LOOP));
-        animations.addAnimation("run", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_run", 10, Animation.PlayMode.LOOP));
-        animations.addAnimation("ball", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_ball", 10, Animation.PlayMode.LOOP));
+        animations.addAnimation("stay", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_stay", 10, null, true));
+        animations.addAnimation("smash", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_smash", 10, null, true));
+        animations.addAnimation("jump", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_jump", 7, "music/game-sfx-jump.wav", true));
+        animations.addAnimation("tired", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_tired", 10, null, true));
+        animations.addAnimation("run", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_run", 10, "music/footstep.wav", true));
+        animations.addAnimation("ball", new MyAtlasAnimation("images/atlas/pika.atlas", "pika_ball", 10, null, true));
     }
+
     @Override
     public void create() {
         init();
         setAnimationsTextures();
-        setSounds();
-
         backgroundMusic.play();
         BodyDef def = new BodyDef();
         FixtureDef fixDef = new FixtureDef();
@@ -69,12 +66,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
         MapLayer textureObj = map.getLayers().get("land");
         Array<RectangleMapObject> rect = textureObj.getObjects().getByType(RectangleMapObject.class);
-        addPhysicObj(def,fixDef, shape, rect);
+        addPhysicObj(def, fixDef, shape, rect);
 
         fixDef.restitution = 0.4f;
         textureObj = map.getLayers().get("water");
         rect = textureObj.getObjects().getByType(RectangleMapObject.class);
-        addPhysicObj(def, fixDef,shape, rect);
+        addPhysicObj(def, fixDef, shape, rect);
 
 
         def.type = BodyDef.BodyType.DynamicBody;
@@ -87,16 +84,15 @@ public class MyGdxGame extends ApplicationAdapter {
         def.position.set(x, y);
         shape.setAsBox(w, h);
         fixDef.shape = shape;
-        fixDef.density = 1/3000;
-        fixDef.friction = 3;
+        fixDef.density = 1 / 1000;
+        fixDef.friction = 1;
         fixDef.restitution = 0;
         body = physic.getWorld().createBody(def);
         body.createFixture(fixDef).setUserData("Hero");
-        body.setGravityScale(3);
         shape.dispose();
     }
 
-    private void addPhysicObj(BodyDef def,FixtureDef fixDef, PolygonShape shape, Array<RectangleMapObject> rect) {
+    private void addPhysicObj(BodyDef def, FixtureDef fixDef, PolygonShape shape, Array<RectangleMapObject> rect) {
         for (int i = 0; i < rect.size; i++) {
             float x = rect.get(i).getRectangle().x + rect.get(i).getRectangle().width / 2;
             float y = rect.get(i).getRectangle().y + rect.get(i).getRectangle().height / 2;
@@ -123,32 +119,34 @@ public class MyGdxGame extends ApplicationAdapter {
         coordinate[1] = body.getPosition().y;
         camera.zoom = 0.3f;
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+
         mapRenderer.setView(camera);
         mapRenderer.render();
         body.setActive(true);
-        HashMap<String, Body> myAction = coordinatesActions.doAction(coordinate, sounds, body);
+        HashMap<String, Body> myAction = coordinatesActions.doAction(coordinate, body);
         for (HashMap.Entry<String, Body> entry : myAction.entrySet()) {
             currentRegion = entry.getKey();
             body = entry.getValue();
         }
 
-        if (body.getLinearVelocity().x < 0) {
+        if (myInputProcessor.getOutString().contains("A")) {
             coordinate[2] = -1;
 
-        } else {
+        } if (myInputProcessor.getOutString().contains("D")){
             coordinate[2] = 1;
         }
-        coordinate[0] = body.getPosition().x-10;
-        coordinate[1] = body.getPosition().y-10;
+        coordinate[0] = body.getPosition().x - 10;
+        coordinate[1] = body.getPosition().y - 10;
         animations.getAnimation(currentRegion).setTime(Gdx.graphics.getDeltaTime());
         TextureRegion currentAnim = animations.getAnimation(currentRegion).draw();
         if (!currentAnim.isFlipX() & coordinate[2] == -1) currentAnim.flip(true, false);
         if (currentAnim.isFlipX() & coordinate[2] == 1) currentAnim.flip(true, false);
+
         physic.step();
         physic.debugDraw(camera);
-        batch.draw(currentAnim, coordinate[0], coordinate[1]);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(currentAnim, coordinate[0], coordinate[1], 20, 20);
         batch.end();
     }
 
@@ -156,7 +154,6 @@ public class MyGdxGame extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         backgroundMusic.dispose();
-        sounds.dispose();
         animations.dispose();
         physic.dispose();
         map.dispose();
@@ -165,24 +162,17 @@ public class MyGdxGame extends ApplicationAdapter {
 
     private void init() {
         coordinate = new float[3];
+        coordinate[2] = 1;
         animations = new MyAnimations();
         currentRegion = "";
         myInputProcessor = new MyInputProcessor();
         Gdx.input.setInputProcessor(myInputProcessor);
         coordinatesActions = new CoordinatesActions(myInputProcessor);
         batch = new SpriteBatch();
-        backgroundMusic = new BackgroundMusic("sounds/background.wav", 0.123f);
-        sounds = new GameSounds();
+        backgroundMusic = new BackgroundMusic("music/background.wav", 0.123f);
         camera = new OrthographicCamera();
         physic = new ProjectPhysic();
         map = new TmxMapLoader().load("map/myMap.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
     }
-
-    private void setSounds() {
-        sounds.addSound("run", "sounds/footstep.wav");
-        sounds.addSound("jump", "sounds/game-sfx-jump.wav");
-        sounds.addSound("headPain", "sounds/head_pain.mp3");
-    }
-
 }
