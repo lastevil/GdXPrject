@@ -14,36 +14,29 @@ public class CoordinatesActions {
     }
 
     //не доогадаля как возвращать текущую
-    public HashMap<String, Body> doAction(float[] coordinate, Body body) {
+    public HashMap<String, Body> doAction(Body body) {
         HashMap<String, Body> map = new HashMap();
         String action = "stay";
         if (inputProcessor.getOutString().isEmpty()) {
             action = "stay";
         }
         if (inputProcessor.getOutString().contains("Space")) {
-            body.applyForceToCenter(new Vector2(0f, 200f), true);
-            body.setGravityScale(6);
+            body.applyForceToCenter(new Vector2(0f, 0.35f), true);
             action = "jump";
         }
         if (inputProcessor.getOutString().contains("A")) {
-            body.applyForceToCenter(new Vector2(-50, 0f), true);
-            body.setGravityScale(2);
+            body.applyForceToCenter(new Vector2(-0.27f, 0f), true);
             action = "run";
         }
         if (inputProcessor.getOutString().contains("S")) {
-            body.setGravityScale(2);
             action = "run";
         }
         if (inputProcessor.getOutString().contains("D")) {
-            body.setGravityScale(2);
-            body.applyForceToCenter(new Vector2(50, 0f), true);
+            body.applyForceToCenter(new Vector2(0.27f, 0f), true);
             action = "run";
         }
         if (inputProcessor.getOutString().contains("W")) {
-            body.setGravityScale(2);
             action = "run";
-            coordinate[1]++;
-
         }
         map.put(action, body);
         return map;

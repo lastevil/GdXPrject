@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("My GDX Game");
 		config.setAudioConfig(32,512,9);
-		new Lwjgl3Application(new MyGdxGame(), config);
+		new Lwjgl3Application(new Main(), config);
 	}
 }
