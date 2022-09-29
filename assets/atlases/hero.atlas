@@ -1,0 +1,195 @@
+
+hero.png
+size: 1024, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+hit
+  rotate: false
+  xy: 629, 69
+  size: 45, 57
+  orig: 47, 57
+  offset: 0, 0
+  index: 2
+hit
+  rotate: false
+  xy: 676, 69
+  size: 44, 57
+  orig: 46, 58
+  offset: 0, 0
+  index: 1
+jump
+  rotate: false
+  xy: 2, 75
+  size: 72, 51
+  orig: 72, 53
+  offset: 0, 1
+  index: 3
+jump
+  rotate: false
+  xy: 76, 76
+  size: 72, 50
+  orig: 76, 53
+  offset: 2, 1
+  index: 2
+jump
+  rotate: false
+  xy: 722, 74
+  size: 41, 52
+  orig: 41, 53
+  offset: 0, 0
+  index: 4
+jump
+  rotate: false
+  xy: 198, 37
+  size: 32, 52
+  orig: 34, 52
+  offset: 1, 0
+  index: 1
+run
+  rotate: false
+  xy: 294, 79
+  size: 55, 47
+  orig: 56, 49
+  offset: 1, 0
+  index: 3
+run
+  rotate: false
+  xy: 351, 78
+  size: 54, 48
+  orig: 56, 49
+  offset: 1, 0
+  index: 5
+run
+  rotate: false
+  xy: 407, 80
+  size: 55, 46
+  orig: 56, 49
+  offset: 1, 1
+  index: 2
+run
+  rotate: false
+  xy: 464, 80
+  size: 54, 46
+  orig: 57, 48
+  offset: 1, 1
+  index: 6
+run
+  rotate: false
+  xy: 520, 79
+  size: 53, 47
+  orig: 54, 47
+  offset: 1, 0
+  index: 1
+run
+  rotate: false
+  xy: 575, 80
+  size: 52, 46
+  orig: 57, 48
+  offset: 2, 0
+  index: 4
+shoot
+  rotate: false
+  xy: 38, 10
+  size: 47, 63
+  orig: 49, 64
+  offset: 1, 0
+  index: 2
+shoot
+  rotate: false
+  xy: 87, 12
+  size: 45, 62
+  orig: 49, 64
+  offset: 1, 0
+  index: 1
+sprint
+  rotate: false
+  xy: 150, 92
+  size: 71, 34
+  orig: 72, 35
+  offset: 0, 0
+  index: 1
+sprint
+  rotate: false
+  xy: 223, 91
+  size: 69, 35
+  orig: 72, 35
+  offset: 1, 0
+  index: 2
+stay
+  rotate: false
+  xy: 899, 62
+  size: 28, 64
+  orig: 29, 66
+  offset: 0, 1
+  index: 1
+stay
+  rotate: false
+  xy: 929, 62
+  size: 28, 64
+  orig: 28, 65
+  offset: 0, 0
+  index: 3
+stay
+  rotate: false
+  xy: 959, 62
+  size: 28, 64
+  orig: 29, 66
+  offset: 1, 1
+  index: 2
+win
+  rotate: false
+  xy: 2, 2
+  size: 34, 71
+  orig: 34, 75
+  offset: 0, 1
+  index: 3
+win
+  rotate: false
+  xy: 765, 70
+  size: 33, 56
+  orig: 34, 75
+  offset: 0, 1
+  index: 2
+win
+  rotate: false
+  xy: 800, 52
+  size: 32, 74
+  orig: 34, 75
+  offset: 0, 0
+  index: 4
+win
+  rotate: false
+  xy: 834, 62
+  size: 31, 64
+  orig: 34, 75
+  offset: 1, 1
+  index: 6
+win
+  rotate: false
+  xy: 867, 63
+  size: 30, 63
+  orig: 34, 75
+  offset: 2, 1
+  index: 5
+win
+  rotate: false
+  xy: 989, 62
+  size: 27, 64
+  orig: 34, 75
+  offset: 3, 2
+  index: 8
+win
+  rotate: false
+  xy: 134, 11
+  size: 28, 63
+  orig: 34, 75
+  offset: 3, 0
+  index: 7
+win
+  rotate: false
+  xy: 164, 32
+  size: 32, 58
+  orig: 34, 75
+  offset: 0, 1
+  index: 1

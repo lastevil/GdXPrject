@@ -36,6 +36,10 @@ public class MyAtlasAnimation {
         return animation.getKeyFrame(time);
     }
 
+    public Animation<TextureAtlas.AtlasRegion> getAnimationRegion(){
+        return animation;
+    }
+
     public void setTime(float timeSet) {
         time += timeSet;
         if (time > d && time < animation.getAnimationDuration()) {
@@ -58,6 +62,5 @@ public class MyAtlasAnimation {
         if (sound != null) {
             this.sound.dispose();
         }
-
     }
 }
