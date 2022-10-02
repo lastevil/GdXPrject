@@ -7,8 +7,8 @@ public class MyContactListener implements ContactListener {
     public static int cnt=0;
     public static boolean isDamage=false;
     public static boolean onLand=true;
-
     public static boolean gameOver=false;
+    public static boolean finishLvl = false;
     @Override
     public void beginContact(Contact contact) {
         Fixture a = contact.getFixtureA();
@@ -37,10 +37,17 @@ public class MyContactListener implements ContactListener {
             gameOver = true;
         }
 
-        if (a.getUserData().equals("legs") && b.getUserData().equals("damage")) {
+        if (a.getUserData().equals("body") && b.getUserData().equals("finish")){
+            finishLvl = true;
+        }
+        if (b.getUserData().equals("body") && a.getUserData().equals("finish")){
+            finishLvl = true;
+        }
+
+        if (a.getUserData().equals("body") && b.getUserData().equals("Damage")) {
             isDamage = true;
         }
-        if (b.getUserData().equals("legs") && a.getUserData().equals("damage")) {
+        if (b.getUserData().equals("body") && a.getUserData().equals("Damage")) {
             isDamage = true;
         }
     }
@@ -58,11 +65,17 @@ public class MyContactListener implements ContactListener {
             cnt--;
             onLand = false;
         }
-        if (a.getUserData().equals("legs") && b.getUserData().equals("damage")) {
+        if (a.getUserData().equals("body") && b.getUserData().equals("Damage")) {
             isDamage = false;
         }
-        if (b.getUserData().equals("legs") && a.getUserData().equals("damage")) {
+        if (b.getUserData().equals("body") && a.getUserData().equals("Damage")) {
             isDamage = false;
+        }
+        if (a.getUserData().equals("body") && b.getUserData().equals("finish")){
+            finishLvl = false;
+        }
+        if (b.getUserData().equals("body") && a.getUserData().equals("finish")){
+            finishLvl = false;
         }
     }
 

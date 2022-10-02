@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="117">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="118">
  <editorsettings>
   <export format="tmx"/>
  </editorsettings>
@@ -204,10 +204,10 @@
    <property name="gravityScale" type="float" value="1"/>
    <property name="restitution" type="float" value="0"/>
   </properties>
-  <object id="101" name="caveIN" x="943.75" y="320" width="10.75" height="71.25">
+  <object id="101" name="finishLvl" x="941.417" y="293" width="10.75" height="110.25">
    <properties>
     <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
+    <property name="friction" type="float" value="0"/>
     <property name="gravityScale" type="float" value="1"/>
     <property name="restitution" type="float" value="0"/>
    </properties>
@@ -388,7 +388,7 @@
    <property name="gravityScale" type="float" value="1"/>
    <property name="restitution" type="float" value="0"/>
   </properties>
-  <object id="88" name="fireball" x="848" y="288.333" width="15.6667" height="15">
+  <object id="88" name="fireball" x="838" y="306.333" width="15.6667" height="15">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="1"/>
@@ -396,7 +396,7 @@
     <property name="restitution" type="float" value="0"/>
    </properties>
   </object>
-  <object id="89" name="fireball" x="815.667" y="255.667" width="15.6667" height="16">
+  <object id="89" name="fireball" x="775.667" y="295" width="15.6667" height="16">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="1"/>
@@ -460,7 +460,7 @@
     <property name="restitution" type="float" value="0"/>
    </properties>
   </object>
-  <object id="100" name="fireball" x="702.75" y="366" width="16.5" height="15.5">
+  <object id="100" name="fireball" x="718.083" y="361.333" width="16.5" height="15.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="1"/>

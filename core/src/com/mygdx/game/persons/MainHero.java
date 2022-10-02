@@ -1,6 +1,5 @@
 package com.mygdx.game.persons;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,13 +15,15 @@ import java.util.Map;
 
 public class MainHero {
     HashMap<Actions, MyAtlasAnimation> manAssetss;
-    private final float FPS = 1 / 2f;
+    private final float FPS = 1 / 3f;
     private float time;
     public static boolean canJump;
     private Animation<TextureAtlas.AtlasRegion> baseAnm;
     private boolean loop;
     private Body body;
     private Dir dir;
+
+    private Actions currentAction;
     private static float dScale = 2.8f;
     private float hitPoints, live;
 
@@ -34,7 +35,7 @@ public class MainHero {
         manAssetss = new HashMap<>();
         manAssetss.put(Actions.JUMP,new MyAtlasAnimation("atlases/hero.atlas", "jump", FPS, "music/game-sfx-jump.wav", true));
         manAssetss.put(Actions.RUN, new MyAtlasAnimation("atlases/hero.atlas", "run", FPS, "music/footstep.wav", true));
-        manAssetss.put(Actions.SPRINT,  new MyAtlasAnimation("atlases/hero.atlas", "sprint", FPS, "music/sprint.wav", true));
+        manAssetss.put(Actions.SPRINT,  new MyAtlasAnimation("atlases/hero.atlas", "sprint", FPS, "music/footstep.wav", true));
         manAssetss.put(Actions.STAY, new MyAtlasAnimation("atlases/hero.atlas", "stay", FPS, null, true));
         manAssetss.put(Actions.SHOOT, new MyAtlasAnimation("atlases/hero.atlas", "shoot", FPS, null, true));
         manAssetss.put(Actions.WIN, new MyAtlasAnimation("atlases/hero.atlas", "win", FPS, "music/win.wav", true));
@@ -46,6 +47,9 @@ public class MainHero {
     public float getHit(float damage) {
         hitPoints -= damage;
         return hitPoints;
+    }
+    public void setHitPoint(float oldHit){
+        hitPoints =hitPoints -(live-oldHit);
     }
 
     public boolean isCanJump() {
@@ -67,19 +71,19 @@ public class MainHero {
     public void setFPS(Vector2 vector, boolean onGround) {
         if (vector.x > 0.1f) setDir(Dir.RIGHT);
         if (vector.x < -0.1f) setDir(Dir.LEFT);
-        float tmp = (float) (Math.sqrt(vector.x * vector.x + vector.y * vector.y)) * 10;
+        float tmp = (float) (Math.sqrt(vector.x * vector.x + vector.y * vector.y)) * 4;
         setState(Actions.STAY);
         if (Math.abs(vector.x) > 0.25f && Math.abs(vector.y) < 10 && onGround) {
             setState(Actions.RUN);
-            baseAnm.setFrameDuration(1 / tmp);
+            manAssetss.get(Actions.RUN).setTime(1 / tmp);
         }
         if (Math.abs(vector.x) > 2f && Math.abs(vector.y) < 10 && onGround) {
             setState(Actions.SPRINT);
-            baseAnm.setFrameDuration(1 / tmp);
+            manAssetss.get(Actions.SPRINT).setTime(1/tmp);
         }
-        if (Math.abs(vector.y) > 1 && !canJump) {
+        if (Math.abs(vector.y) > 1.5 && !canJump) {
             setState(Actions.JUMP);
-            baseAnm.setFrameDuration(FPS);
+            manAssetss.get(Actions.JUMP).setTime(FPS);
         }
     }
 
@@ -90,16 +94,20 @@ public class MainHero {
 
     public void setState(Actions state) {
         baseAnm = manAssetss.get(state).getAnimationRegion();
+        currentAction =state;
         switch (state) {
             case STAY:
+                manAssetss.get(state).setPlayMode(true);
+                manAssetss.get(state).setTime(FPS);
                 loop = true;
-                baseAnm.setFrameDuration(FPS);
                 break;
             case SPRINT:
+                manAssetss.get(state).setTime(FPS);
+                manAssetss.get(state).setPlayMode(true);
                 loop = true;
-                baseAnm.setFrameDuration(FPS);
                 break;
             case JUMP:
+                manAssetss.get(state).setPlayMode(false);
                 loop = false;
                 break;
             default:
@@ -109,14 +117,14 @@ public class MainHero {
     public TextureRegion getFrame() {
         if (time > baseAnm.getAnimationDuration() && loop) time = 0;
         if (time > baseAnm.getAnimationDuration()) time = 0;
-        TextureRegion tr = baseAnm.getKeyFrame(time);
+        TextureRegion tr = manAssetss.get(currentAction).draw();//baseAnm.getKeyFrame(time);
         if (!tr.isFlipX() && dir == Dir.RIGHT) tr.flip(true, false);
         if (tr.isFlipX() && dir == Dir.LEFT) tr.flip(true, false);
         return tr;
     }
 
     public Rectangle getRect() {
-        TextureRegion tr = baseAnm.getKeyFrame(time);
+        TextureRegion tr = manAssetss.get(currentAction).draw();
         float cx = body.getPosition().x * ProjectPhysic.PPM - tr.getRegionWidth() / 2 / dScale;
         float cy = body.getPosition().y * ProjectPhysic.PPM - tr.getRegionHeight() / 2 / dScale;
         float cW = tr.getRegionWidth() / ProjectPhysic.PPM / dScale;

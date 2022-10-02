@@ -45,8 +45,6 @@ public class ProjectPhysic {
         BodyDef def = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-//        CircleShape circleShape;
-//        ChainShape chainShape;
 
         if (type.equals("StaticBody")) def.type = BodyDef.BodyType.StaticBody;
         if (type.equals("DynamicBody")) def.type = BodyDef.BodyType.DynamicBody;
@@ -73,6 +71,15 @@ public class ProjectPhysic {
             polygonShape.setAsBox(rect.width/3/PPM, rect.height/10/PPM, new Vector2(0, -rect.width/2), 0);
             body.createFixture(fdef).setUserData("legs");
             body.getFixtureList().get(1).setSensor(true);
+
+            polygonShape.setAsBox(rect.width/2.9f/PPM, rect.height/1.3f/PPM, new Vector2(0, 0), 0);
+            body.createFixture(fdef).setUserData("body");
+            body.getFixtureList().get(1).setSensor(true);
+        }
+        if (name.equals("finishLvl")){
+            polygonShape.setAsBox(rect.width/PPM,rect.height/PPM);
+            body.createFixture(fdef).setUserData("finish");
+            body.getFixtureList().get(1).setSensor(true);
         }
 
         polygonShape.dispose();
@@ -81,7 +88,6 @@ public class ProjectPhysic {
 
     public void addDmgObject(RectangleMapObject object) {
         Rectangle rect = object.getRectangle();
-        String type = (String) object.getProperties().get("BodyType");
         BodyDef def = new BodyDef();
         FixtureDef fdef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
@@ -92,7 +98,7 @@ public class ProjectPhysic {
         fdef.shape = polygonShape;
 
 
-        String name = "damage";
+        String name = "Damage";
         Body body;
         body = world.createBody(def);
         body.setUserData(name);

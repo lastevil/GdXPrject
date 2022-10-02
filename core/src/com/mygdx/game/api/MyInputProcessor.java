@@ -39,16 +39,15 @@ public class MyInputProcessor implements InputProcessor {
             }
         }
         if (outString.contains("Space")) {
-            float x = getVector().x;
-            outForce.add(x*(-1.5f), 2f);
+            outForce.add(0, 3.5f);
         }
         if (outString.contains("A") && !outString.contains("Shift")) {
-            outForce.add(-0.3f, 0);
+            outForce.add(-0.6f, 0);
         }
 /*        if (outString.contains("S")) {
         }*/
         if ((outString.contains("D")) && !outString.contains("Shift")) {
-            outForce.add(0.3f, 0);
+            outForce.add(0.6f, 0);
         }
 /*        if (outString.contains("W")) {
         }*/

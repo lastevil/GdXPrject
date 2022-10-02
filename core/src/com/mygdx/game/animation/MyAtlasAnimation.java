@@ -44,17 +44,21 @@ public class MyAtlasAnimation {
         time += timeSet;
         if (time > d && time < animation.getAnimationDuration()) {
             if (sound != null) {
-                sound.play();
+                sound.play(0.3f);
             }
             d *= 2;
         } else if (time >= animation.getAnimationDuration() && loop) {
             time = 0;
             d = animation.getAnimationDuration() / 2;
             if (sound != null) {
-                sound.play();
+                sound.play(0.3f);
             }
 
         }
+    }
+
+    public void setPlayMode(boolean playMode){
+        this.loop=playMode;
     }
 
     public void dispose() {

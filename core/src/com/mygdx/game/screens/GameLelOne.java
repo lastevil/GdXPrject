@@ -4,10 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -26,8 +24,6 @@ import com.mygdx.game.api.MyContactListener;
 import com.mygdx.game.api.MyInputProcessor;
 import com.mygdx.game.api.ProjectPhysic;
 import com.mygdx.game.persons.MainHero;
-
-import java.util.Arrays;
 
 public class GameLelOne implements Screen {
     Game game;
@@ -65,12 +61,12 @@ public class GameLelOne implements Screen {
         front = new int[2];
 
         front[0] = map.getLayers().getIndex("water_front");
-        front[1] = map.getLayers().getIndex("grass");
+        front[1] = map.getLayers().getIndex("land");
+
         tL[0] = map.getLayers().getIndex("sky");
         tL[1] = map.getLayers().getIndex("fon");
         tL[2] = map.getLayers().getIndex("water_back");
-        ;
-        tL[3] = map.getLayers().getIndex("land");
+        tL[3] = map.getLayers().getIndex("grass");
         tL[4] = map.getLayers().getIndex("cave");
 
         //  TiledMapTileMapObject mo = (TiledMapTileMapObject) map.getLayers().get("damage").getObjects().get("monster1");
@@ -90,10 +86,6 @@ public class GameLelOne implements Screen {
         }
 
         objects.clear();
-        //  objects.addAll(map.getLayers().get("damage").getObjects().getByType(RectangleMapObject.class));
-        //  for (int i = 0; i < objects.size; i++) {
-        //     projectPhysic.addDmgObject(objects.get(i));
-        // }
 
         body = projectPhysic.addObject((RectangleMapObject) map.getLayers().get("hero").getObjects().get("Hero"));
         body.setFixedRotation(true);
@@ -153,9 +145,9 @@ public class GameLelOne implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        font.draw(batch, "HP:" + hero.getHit(0) + "\nОсталось: " + (winCount-balls), (int) tmp.x, (int) (tmp.y + tmp.height*2 * ProjectPhysic.PPM));
-        batch.draw(hero.getFrame(), tmp.x, tmp.y, tmp.width * ProjectPhysic.PPM, tmp.height * ProjectPhysic.PPM);
 
+        batch.draw(hero.getFrame(), tmp.x, tmp.y, tmp.width * ProjectPhysic.PPM, tmp.height * ProjectPhysic.PPM);
+        font.draw(batch, "HP:" + hero.getHit(0) + "\nОсталось: " + (winCount-balls), (int) (camera.position.x)-20, (int) (camera.position.y)+50);
         Array<Body> bodys = projectPhysic.getBodys("fireball");
         fireBall.setTime(delta);
         TextureRegion tr = fireBall.draw();
@@ -184,20 +176,19 @@ public class GameLelOne implements Screen {
         if(MyContactListener.gameOver){
             dispose();
             MyContactListener.gameOver = false;
+            MyContactListener.finishLvl = false;
             game.setScreen(new GameOverScreen(game));
         }
 
-        if((winCount-balls)==0){
+        if((winCount-balls)==0 && MyContactListener.finishLvl){
+            music.stop();
+            float heroHitPoint = hero.getHit(0);
             dispose();
-            game.setScreen(new VictoryScreen(game));
+            MyContactListener.finishLvl = false;
+            game.setScreen(new GameLelTwo(game,heroHitPoint));
         }
 
-/*        if (MyContactListener.isDamage) {
-            if (hero.getHit(1) < 1) {
-                dispose();
-                game.setScreen(new GameOverScreen(game));
-            }
-        }*/
+
     }
 
     @Override
