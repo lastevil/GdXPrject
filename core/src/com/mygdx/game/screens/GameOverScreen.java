@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.animation.Label;
+import com.mygdx.game.api.MyContactListener;
 
 public class GameOverScreen implements Screen {
     Game game;
@@ -17,6 +18,7 @@ public class GameOverScreen implements Screen {
         fon = new Texture("images/gameOverScreen/fon.jpg");
         batch = new SpriteBatch();
         label = new Label(80);
+        MyContactListener.isDamage=false;
     }
     @Override
     public void show() {

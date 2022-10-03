@@ -68,12 +68,8 @@ public class ProjectPhysic {
         body.createFixture(fdef).setUserData(name);
 
         if (name.equals("Hero")) {
-            polygonShape.setAsBox(rect.width/3/PPM, rect.height/10/PPM, new Vector2(0, -rect.width/2), 0);
+            polygonShape.setAsBox(rect.width/2.5f/PPM, rect.height/10/PPM, new Vector2(0, -rect.width/2), 0);
             body.createFixture(fdef).setUserData("legs");
-            body.getFixtureList().get(1).setSensor(true);
-
-            polygonShape.setAsBox(rect.width/2.9f/PPM, rect.height/1.3f/PPM, new Vector2(0, 0), 0);
-            body.createFixture(fdef).setUserData("body");
             body.getFixtureList().get(1).setSensor(true);
         }
         if (name.equals("finishLvl")){
@@ -96,8 +92,8 @@ public class ProjectPhysic {
         def.position.set((rect.x + rect.width/2)/PPM, (rect.y + rect.height/2)/PPM);
         polygonShape.setAsBox(rect.width/2/PPM, rect.height/2/PPM);
         fdef.shape = polygonShape;
-
-
+        if ( object.getProperties().get("friction") != null) fdef.friction = (float) object.getProperties().get("friction");
+        fdef.restitution = (float) object.getProperties().get("restitution");
         String name = "Damage";
         Body body;
         body = world.createBody(def);

@@ -2,6 +2,7 @@ package com.mygdx.game.api;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.screens.GameLelOne;
+import com.mygdx.game.screens.GameLelTwo;
 
 public class MyContactListener implements ContactListener {
     public static int cnt=0;
@@ -15,10 +16,37 @@ public class MyContactListener implements ContactListener {
         Fixture b = contact.getFixtureB();
 
         if (a.getUserData().equals("Hero") && b.getUserData().equals("fireball")) {
+            if (GameLelOne.bodyToDelete!=null){
             GameLelOne.bodyToDelete.add(b.getBody());
+            }
+            if (GameLelTwo.bodyToDelete!=null){
+                GameLelTwo.bodyToDelete.add(b.getBody());
+            }
         }
         if (b.getUserData().equals("Hero") && a.getUserData().equals("fireball")) {
-            GameLelOne.bodyToDelete.add(a.getBody());
+            if (GameLelOne.bodyToDelete!=null){
+                GameLelOne.bodyToDelete.add(a.getBody());
+            }
+            if (GameLelTwo.bodyToDelete!=null){
+                GameLelTwo.bodyToDelete.add(a.getBody());
+            }
+        }
+
+        if (a.getUserData().equals("legs") && b.getUserData().equals("fireball")) {
+            if (GameLelOne.bodyToDelete!=null){
+                GameLelOne.bodyToDelete.add(b.getBody());
+            }
+            if (GameLelTwo.bodyToDelete!=null){
+                GameLelTwo.bodyToDelete.add(b.getBody());
+            }
+        }
+        if (b.getUserData().equals("legs") && a.getUserData().equals("fireball")) {
+            if (GameLelOne.bodyToDelete!=null){
+                GameLelOne.bodyToDelete.add(a.getBody());
+            }
+            if (GameLelTwo.bodyToDelete!=null){
+                GameLelTwo.bodyToDelete.add(a.getBody());
+            }
         }
 
         if (a.getUserData().equals("legs") && b.getUserData().equals("Land")) {
@@ -37,17 +65,17 @@ public class MyContactListener implements ContactListener {
             gameOver = true;
         }
 
-        if (a.getUserData().equals("body") && b.getUserData().equals("finish")){
+        if (a.getUserData().equals("Hero") && b.getUserData().equals("finish")){
             finishLvl = true;
         }
-        if (b.getUserData().equals("body") && a.getUserData().equals("finish")){
+        if (b.getUserData().equals("Hero") && a.getUserData().equals("finish")){
             finishLvl = true;
         }
 
-        if (a.getUserData().equals("body") && b.getUserData().equals("Damage")) {
+        if (a.getUserData().equals("Hero") && b.getUserData().equals("Damage")) {
             isDamage = true;
         }
-        if (b.getUserData().equals("body") && a.getUserData().equals("Damage")) {
+        if (b.getUserData().equals("Hero") && a.getUserData().equals("Damage")) {
             isDamage = true;
         }
     }
@@ -65,16 +93,16 @@ public class MyContactListener implements ContactListener {
             cnt--;
             onLand = false;
         }
-        if (a.getUserData().equals("body") && b.getUserData().equals("Damage")) {
+        if (a.getUserData().equals("Hero") && b.getUserData().equals("Damage")) {
             isDamage = false;
         }
-        if (b.getUserData().equals("body") && a.getUserData().equals("Damage")) {
+        if (b.getUserData().equals("Hero") && a.getUserData().equals("Damage")) {
             isDamage = false;
         }
-        if (a.getUserData().equals("body") && b.getUserData().equals("finish")){
+        if (a.getUserData().equals("Hero") && b.getUserData().equals("finish")){
             finishLvl = false;
         }
-        if (b.getUserData().equals("body") && a.getUserData().equals("finish")){
+        if (b.getUserData().equals("Hero") && a.getUserData().equals("finish")){
             finishLvl = false;
         }
     }

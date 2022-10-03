@@ -39,46 +39,46 @@ public class GameLelTwo implements Screen {
     private final Label font;
     private final MainHero hero;
     public static Array<Body> bodyToDelete;
-
+    private float damage;
     private Body body;
     private int winCount;
 
     public GameLelTwo(Game game, float hitPoint) {
         winCount = 0;
         myInputProcessor = new MyInputProcessor();
+        Gdx.input.setInputProcessor(myInputProcessor);
         fireBall = new MyAtlasAnimation("atlases/fire.atlas", "fire", 4, null, true);
         map = new TmxMapLoader().load("map/map_lvl2.tmx");
         font = new Label(12);
-        tL = new int[4];
+        tL = new int[3];
         front = new int[2];
         front[0] = map.getLayers().getIndex("land");
         front[1] = map.getLayers().getIndex("fon");
         tL[0] = map.getLayers().getIndex("dmg");
-        tL[1] = map.getLayers().getIndex("animated");
-        tL[2] = map.getLayers().getIndex("tree");
-        tL[3] = map.getLayers().getIndex("water");
+        tL[1] = map.getLayers().getIndex("tree");
+        tL[2] = map.getLayers().getIndex("water_fon");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         bodyToDelete = new Array<>();
         this.game = game;
         projectPhysic = new ProjectPhysic();
         Array<RectangleMapObject> objects = new Array<>();
-        objects.addAll(map.getLayers().get("lands").getObjects().getByType(RectangleMapObject.class));
         objects.addAll(map.getLayers().get("water").getObjects().getByType(RectangleMapObject.class));
+        objects.addAll(map.getLayers().get("lands").getObjects().getByType(RectangleMapObject.class));
+        objects.addAll(map.getLayers().get("Finish").getObjects().getByType(RectangleMapObject.class));
         objects.addAll(map.getLayers().get("fireballs").getObjects().getByType(RectangleMapObject.class));
-        objects.addAll(map.getLayers().get("damage").getObjects().getByType(RectangleMapObject.class));
         for (int i = 0; i < objects.size; i++) {
             projectPhysic.addObject(objects.get(i));
         }
-
         objects.clear();
         objects.addAll(map.getLayers().get("damage").getObjects().getByType(RectangleMapObject.class));
         for (int i = 0; i < objects.size; i++) {
             projectPhysic.addDmgObject(objects.get(i));
         }
-
+        damage = (float)objects.get(0).getProperties().get("damage");
         body = projectPhysic.addObject((RectangleMapObject) map.getLayers().get("hero").getObjects().get("Hero"));
         body.setFixedRotation(true);
         hero = new MainHero(body);
+        hero.setHitPoint(hitPoint);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("music/levelTwo/cave.wav"));
         music.setVolume(0.025f);
@@ -88,7 +88,7 @@ public class GameLelTwo implements Screen {
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
-        camera.zoom = 1f;
+        camera.zoom = 0.35f;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GameLelTwo implements Screen {
         ScreenUtils.clear(0, 206, 209,1);
 
         camera.position.x = body.getPosition().x * projectPhysic.PPM;
-        camera.position.y = body.getPosition().y * projectPhysic.PPM;
+        camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
         camera.update();
 
         mapRenderer.setView(camera);
@@ -165,10 +165,11 @@ public class GameLelTwo implements Screen {
             dispose();
             MyContactListener.gameOver = false;
             MyContactListener.finishLvl = false;
+            MyContactListener.isDamage = false;
             game.setScreen(new GameOverScreen(game));
         }
         if (MyContactListener.isDamage) {
-            if (hero.getHit(1) < 1) {
+            if (hero.getHit(damage) < 1) {
                 dispose();
                 game.setScreen(new GameOverScreen(game));
             }
@@ -211,5 +212,6 @@ public class GameLelTwo implements Screen {
         this.map.dispose();
         mapRenderer.dispose();
         this.font.dispose();
+        music.dispose();
     }
 }

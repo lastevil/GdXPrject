@@ -80,9 +80,6 @@ public class GameLelOne implements Screen {
 
         for (int i = 0; i < objects.size; i++) {
             projectPhysic.addObject(objects.get(i));
-            if(objects.get(i).getName().equals("fireball")){
-                winCount++;
-            }
         }
 
         objects.clear();
@@ -102,6 +99,7 @@ public class GameLelOne implements Screen {
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
+
         camera.zoom = 0.35f;
     }
 
@@ -114,7 +112,7 @@ public class GameLelOne implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         camera.position.x = body.getPosition().x * projectPhysic.PPM;
-        camera.position.y = body.getPosition().y * projectPhysic.PPM;
+        camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
         camera.update();
 
         mapRenderer.setView(camera);
@@ -122,7 +120,6 @@ public class GameLelOne implements Screen {
 
         hero.setTime(delta);
         Vector2 vector = myInputProcessor.getVector();
-        System.out.println(myInputProcessor.getOutString());
         if (MyContactListener.cnt < 1) {
             vector.set(vector.x, 0);
         }
@@ -147,8 +144,9 @@ public class GameLelOne implements Screen {
         batch.begin();
 
         batch.draw(hero.getFrame(), tmp.x, tmp.y, tmp.width * ProjectPhysic.PPM, tmp.height * ProjectPhysic.PPM);
-        font.draw(batch, "HP:" + hero.getHit(0) + "\nОсталось: " + (winCount-balls), (int) (camera.position.x)-20, (int) (camera.position.y)+50);
+        font.draw(batch, "HP:" + hero.getHit(0) + "\nОсталось: " + winCount, (int) (camera.position.x)-20, (int) (camera.position.y)+50);
         Array<Body> bodys = projectPhysic.getBodys("fireball");
+        winCount = bodys.size;
         fireBall.setTime(delta);
         TextureRegion tr = fireBall.draw();
         float dScale = 2;
@@ -180,7 +178,7 @@ public class GameLelOne implements Screen {
             game.setScreen(new GameOverScreen(game));
         }
 
-        if((winCount-balls)==0 && MyContactListener.finishLvl){
+        if((winCount)==0 && MyContactListener.finishLvl){
             music.stop();
             float heroHitPoint = hero.getHit(0);
             dispose();

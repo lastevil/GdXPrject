@@ -2,6 +2,7 @@ package com.mygdx.game.api;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -10,9 +11,12 @@ public class MyInputProcessor implements InputProcessor {
     private ArrayList<String> outString;
     private Vector2 outForce;
 
+    private float cameraY;
+
     public MyInputProcessor() {
         outString = new ArrayList<>();
         outForce = new Vector2();
+        cameraY = 0;
     }
 
     public String getOutString() {
@@ -23,6 +27,9 @@ public class MyInputProcessor implements InputProcessor {
         return outForce;
     }
 
+    public float getCameraY(){
+        return cameraY;
+    }
     @Override
     public boolean keyDown(int keycode) {
         if (!outString.contains(Input.Keys.toString(keycode))) {
@@ -39,18 +46,20 @@ public class MyInputProcessor implements InputProcessor {
             }
         }
         if (outString.contains("Space")) {
-            outForce.add(0, 3.5f);
+            outForce.add(0, 2f);
         }
         if (outString.contains("A") && !outString.contains("Shift")) {
-            outForce.add(-0.6f, 0);
+            outForce.add(-0.4f, 0);
         }
-/*        if (outString.contains("S")) {
-        }*/
+        if (outString.contains("S")) {
+            cameraY=-50;
+        }
         if ((outString.contains("D")) && !outString.contains("Shift")) {
-            outForce.add(0.6f, 0);
+            outForce.add(0.4f, 0);
         }
-/*        if (outString.contains("W")) {
-        }*/
+        if (outString.contains("W")) {
+            cameraY=50;
+        }
         if (outString.contains("L-Shift") && (outString.contains("A") || outString.contains("Left"))) {
             outForce.add(-0.05f, 0);
         }
@@ -85,6 +94,12 @@ public class MyInputProcessor implements InputProcessor {
             }
             if (s.equals("D") ) {
                 outForce.set(0, outForce.y);
+            }
+            if (s.equals("S")){
+                cameraY=0;
+            }
+            if (s.equals("W")){
+                cameraY=0;
             }
             outString.remove(s);
         }
