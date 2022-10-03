@@ -50,13 +50,14 @@ public class GameLelTwo implements Screen {
         fireBall = new MyAtlasAnimation("atlases/fire.atlas", "fire", 4, null, true);
         map = new TmxMapLoader().load("map/map_lvl2.tmx");
         font = new Label(12);
-        tL = new int[3];
+        tL = new int[4];
         front = new int[2];
-        front[0] = map.getLayers().getIndex("land");
-        front[1] = map.getLayers().getIndex("fon");
-        tL[0] = map.getLayers().getIndex("dmg");
-        tL[1] = map.getLayers().getIndex("tree");
-        tL[2] = map.getLayers().getIndex("water_fon");
+        front[1] = map.getLayers().getIndex("land");
+        front[0] = map.getLayers().getIndex("tree");
+        tL[0] = map.getLayers().getIndex("background");
+        tL[1] = map.getLayers().getIndex("dmg");
+        tL[2] = map.getLayers().getIndex("fon");
+        tL[3] = map.getLayers().getIndex("water_fon");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         bodyToDelete = new Array<>();
         this.game = game;
@@ -98,7 +99,7 @@ public class GameLelTwo implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 206, 209,1);
+        ScreenUtils.clear(Color.DARK_GRAY);
 
         camera.position.x = body.getPosition().x * projectPhysic.PPM;
         camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
