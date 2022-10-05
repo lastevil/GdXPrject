@@ -1,5 +1,6 @@
 package com.mygdx.game.api;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.screens.GameLelOne;
 import com.mygdx.game.screens.GameLelTwo;
@@ -10,6 +11,9 @@ public class MyContactListener implements ContactListener {
     public static boolean onLand=true;
     public static boolean gameOver=false;
     public static boolean finishLvl = false;
+    public static boolean isShocked = false;
+    public static boolean isShoot = false;
+    public static Vector2 contactDmgVector = new Vector2(0,0);
     @Override
     public void beginContact(Contact contact) {
         Fixture a = contact.getFixtureA();
@@ -52,10 +56,12 @@ public class MyContactListener implements ContactListener {
         if (a.getUserData().equals("legs") && b.getUserData().equals("Land")) {
             cnt++;
             onLand = true;
+            isShocked = false;
         }
         if (b.getUserData().equals("legs") && a.getUserData().equals("Land")) {
             cnt++;
             onLand = true;
+            isShocked = false;
         }
 
         if (a.getUserData().equals("legs") && b.getUserData().equals("WATER")) {
@@ -74,9 +80,13 @@ public class MyContactListener implements ContactListener {
 
         if (a.getUserData().equals("Hero") && b.getUserData().equals("Damage")) {
             isDamage = true;
+            isShocked = true;
+            contactDmgVector = a.getBody().getLinearVelocity();
         }
         if (b.getUserData().equals("Hero") && a.getUserData().equals("Damage")) {
             isDamage = true;
+            isShocked = true;
+            contactDmgVector = a.getBody().getLinearVelocity();
         }
     }
 

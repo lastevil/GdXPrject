@@ -18,12 +18,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.actions.Actions;
 import com.mygdx.game.animation.Label;
 import com.mygdx.game.animation.MyAtlasAnimation;
 import com.mygdx.game.api.MyContactListener;
 import com.mygdx.game.api.MyInputProcessor;
 import com.mygdx.game.api.ProjectPhysic;
+import com.mygdx.game.persons.Bullet;
 import com.mygdx.game.persons.MainHero;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameLelOne implements Screen {
     Game game;
@@ -39,13 +44,13 @@ public class GameLelOne implements Screen {
     private final MainHero hero;
     public static Array<Body> bodyToDelete;
     private final Label font;
-    private int balls;
+    public static List<Bullet> bullets;
 
     private int winCount;
     private MyAtlasAnimation fireBall;
 
     public GameLelOne(Game game) {
-        balls = 0;
+        bullets = new ArrayList<>();
         winCount = 0;
         font = new Label(12);
 
@@ -111,7 +116,7 @@ public class GameLelOne implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-        camera.position.x = body.getPosition().x * projectPhysic.PPM;
+        camera.position.x = body.getPosition().x * projectPhysic.PPM +myInputProcessor.getCameraX();
         camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
         camera.update();
 
@@ -130,7 +135,14 @@ public class GameLelOne implements Screen {
             hero.setCanJump(false);
         }
         body.applyForceToCenter(vector, true);
-        hero.setFPS(body.getLinearVelocity(), true);
+        Body tBody =  hero.setFPS(body.getLinearVelocity(), MyContactListener.onLand);
+        if (tBody != null && MyContactListener.isShoot) {
+            bullets.add(new Bullet(projectPhysic, tBody.getPosition().x, tBody.getPosition().y, hero.getDir()));
+            vector.set(0, 0);
+        } else if (tBody != null) {
+            vector.set(0, 0);
+            hero.setState(Actions.STAY);
+        }
 
         Rectangle tmp = hero.getRect();
         ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(tmp.width / 2, tmp.height / 2);
@@ -163,7 +175,6 @@ public class GameLelOne implements Screen {
         mapRenderer.render(front);
 
         for (Body bd : bodyToDelete) {
-            balls++;
             projectPhysic.destroyBody(bd);
         }
         bodyToDelete.clear();
@@ -181,9 +192,9 @@ public class GameLelOne implements Screen {
         if((winCount)==0 && MyContactListener.finishLvl){
             music.stop();
             float heroHitPoint = hero.getHit(0);
-            dispose();
             MyContactListener.finishLvl = false;
             game.setScreen(new GameLelTwo(game,heroHitPoint));
+            dispose();
         }
 
 
@@ -219,5 +230,6 @@ public class GameLelOne implements Screen {
         this.font.dispose();
         this.projectPhysic.dispose();
         this.fireBall.dispose();
+        game.dispose();
     }
 }

@@ -94,6 +94,7 @@ public class ProjectPhysic {
         fdef.shape = polygonShape;
         if ( object.getProperties().get("friction") != null) fdef.friction = (float) object.getProperties().get("friction");
         fdef.restitution = (float) object.getProperties().get("restitution");
+        fdef.density = 1;
         String name = "Damage";
         Body body;
         body = world.createBody(def);
@@ -107,5 +108,22 @@ public class ProjectPhysic {
     public void dispose(){
         this.world.dispose();
         this.debugRenderer.dispose();
+    }
+
+    public Body addBullet(float x, float y) {
+        BodyDef def = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape polygonShape = new PolygonShape();
+        def.type = BodyDef.BodyType.DynamicBody;
+        def.position.set(x, y);
+        polygonShape.setAsBox(2/PPM, 2/PPM);
+        fdef.shape = polygonShape;
+        Body body;
+        body = world.createBody(def);
+        body.setUserData("bullet");
+        body.createFixture(fdef).setUserData("bullet");
+        body.getFixtureList().get(0).setSensor(true);
+        polygonShape.dispose();
+        return body;
     }
 }

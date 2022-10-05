@@ -64,6 +64,7 @@ public class GameLelTwo implements Screen {
         projectPhysic = new ProjectPhysic();
         Array<RectangleMapObject> objects = new Array<>();
         objects.addAll(map.getLayers().get("water").getObjects().getByType(RectangleMapObject.class));
+        objects.addAll();
         objects.addAll(map.getLayers().get("lands").getObjects().getByType(RectangleMapObject.class));
         objects.addAll(map.getLayers().get("Finish").getObjects().getByType(RectangleMapObject.class));
         objects.addAll(map.getLayers().get("fireballs").getObjects().getByType(RectangleMapObject.class));
@@ -101,7 +102,7 @@ public class GameLelTwo implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.DARK_GRAY);
 
-        camera.position.x = body.getPosition().x * projectPhysic.PPM;
+        camera.position.x = body.getPosition().x * projectPhysic.PPM +myInputProcessor.getCameraX();
         camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
         camera.update();
 
@@ -163,22 +164,22 @@ public class GameLelTwo implements Screen {
 
 
         if(MyContactListener.gameOver){
-            dispose();
             MyContactListener.gameOver = false;
             MyContactListener.finishLvl = false;
             MyContactListener.isDamage = false;
             game.setScreen(new GameOverScreen(game));
+            dispose();
         }
         if (MyContactListener.isDamage) {
-            if (hero.getHit(damage) < 1) {
-                dispose();
+            if (hero.getHit(1) < 1) {
                 game.setScreen(new GameOverScreen(game));
+                dispose();
             }
         }
         if(winCount==0 && MyContactListener.finishLvl){
-            dispose();
             MyContactListener.finishLvl = false;
             game.setScreen(new VictoryScreen(game));
+            dispose();
         }
     }
 
@@ -214,5 +215,6 @@ public class GameLelTwo implements Screen {
         mapRenderer.dispose();
         this.font.dispose();
         music.dispose();
+        game.dispose();
     }
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.actions.Actions;
 import com.mygdx.game.animation.MyAtlasAnimation;
+import com.mygdx.game.api.MyContactListener;
 import com.mygdx.game.api.ProjectPhysic;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 public class MainHero {
     HashMap<Actions, MyAtlasAnimation> manAssetss;
-    private final float FPS = 1 / 3f;
+    private final float FPS = 1 / 4f;
     private float time;
     public static boolean canJump;
     private Animation<TextureAtlas.AtlasRegion> baseAnm;
@@ -33,23 +34,27 @@ public class MainHero {
         hitPoints = live = 100;
         this.body = body;
         manAssetss = new HashMap<>();
-        manAssetss.put(Actions.JUMP,new MyAtlasAnimation("atlases/hero.atlas", "jump", FPS, "music/game-sfx-jump.wav", true));
+        manAssetss.put(Actions.JUMP, new MyAtlasAnimation("atlases/hero.atlas", "jump", FPS, "music/game-sfx-jump.wav", true));
         manAssetss.put(Actions.RUN, new MyAtlasAnimation("atlases/hero.atlas", "run", FPS, "music/footstep.wav", true));
-        manAssetss.put(Actions.SPRINT,  new MyAtlasAnimation("atlases/hero.atlas", "sprint", FPS, "music/footstep.wav", true));
+        manAssetss.put(Actions.SPRINT, new MyAtlasAnimation("atlases/hero.atlas", "sprint", FPS, "music/footstep.wav", true));
         manAssetss.put(Actions.STAY, new MyAtlasAnimation("atlases/hero.atlas", "stay", FPS, null, true));
-        manAssetss.put(Actions.SHOOT, new MyAtlasAnimation("atlases/hero.atlas", "shoot", FPS, null, true));
+        manAssetss.put(Actions.HIT, new MyAtlasAnimation("atlases/hero.atlas", "hit", FPS, null, true));
+        manAssetss.put(Actions.SHOT, new MyAtlasAnimation("atlases/hero.atlas", "shot", FPS, "music/sprint.wav", true));
+        manAssetss.put(Actions.JUMP_SHOT, new MyAtlasAnimation("atlases/hero.atlas", "jump_shot", FPS, "music/sprint.wav", true));
         manAssetss.put(Actions.WIN, new MyAtlasAnimation("atlases/hero.atlas", "win", FPS, "music/win.wav", true));
         baseAnm = manAssetss.get(Actions.STAY).getAnimationRegion();
         loop = true;
         dir = Dir.LEFT;
+        currentAction = Actions.STAY;
     }
 
     public float getHit(float damage) {
         hitPoints -= damage;
         return hitPoints;
     }
-    public void setHitPoint(float oldHit){
-        hitPoints =hitPoints -(live-oldHit);
+
+    public void setHitPoint(float oldHit) {
+        hitPoints = hitPoints - (live - oldHit);
     }
 
     public boolean isCanJump() {
@@ -64,27 +69,58 @@ public class MainHero {
         this.dir = dir;
     }
 
+    public int getDir() {
+        return (dir == Dir.LEFT) ? -1 : 1;
+    }
+
     public void setLoop(boolean loop) {
         this.loop = loop;
     }
 
-    public void setFPS(Vector2 vector, boolean onGround) {
+    public TextureRegion getActionFrame(Actions actions) {
+        return manAssetss.get(actions).draw();
+    }
+
+    public Body setFPS(Vector2 vector, boolean onGround) {
         if (vector.x > 0.1f) setDir(Dir.RIGHT);
         if (vector.x < -0.1f) setDir(Dir.LEFT);
         float tmp = (float) (Math.sqrt(vector.x * vector.x + vector.y * vector.y)) * 4;
-        setState(Actions.STAY);
-        if (Math.abs(vector.x) > 0.25f && Math.abs(vector.y) < 10 && onGround) {
-            setState(Actions.RUN);
-            manAssetss.get(Actions.RUN).setTime(1 / tmp);
+        if (MyContactListener.isShocked) {
+            setState(Actions.HIT);
+            manAssetss.get(Actions.HIT).setTime(FPS);
+            if (MyContactListener.isDamage) {
+                body.setLinearVelocity(0,0);
+                body.applyForceToCenter(-0.7f * MyContactListener.contactDmgVector.x, -1*MyContactListener.contactDmgVector.y, true);
+            }
+        } else {
+            if (Math.abs(vector.x) > 0.2f && Math.abs(vector.y) < 10 && onGround && canJump) {
+                setState(Actions.RUN);
+                manAssetss.get(Actions.RUN).setTime(4 / tmp);
+            }
+            if (Math.abs(vector.x) > 3f && Math.abs(vector.y) < 10 && onGround && canJump) {
+                setState(Actions.SPRINT);
+                manAssetss.get(Actions.SPRINT).setTime(1 / tmp);
+            }
+            if (Math.abs(vector.y) > 1 && !canJump) {
+                setState(Actions.JUMP);
+                manAssetss.get(Actions.JUMP).setTime(1.3f / tmp);
+            }
+            if (MyContactListener.isShoot && onGround) {
+                setState(Actions.SHOT);
+                manAssetss.get(Actions.SHOT).setTime(FPS);
+                return body;
+            }
+            if (MyContactListener.isShoot && !onGround) {
+                setState(Actions.JUMP_SHOT);
+                manAssetss.get(Actions.JUMP_SHOT).setTime(FPS);
+                return body;
+            }
+
+            if (Math.abs(vector.x) <= 0.02f && onGround && !MyContactListener.isShoot) {
+                setState(Actions.STAY);
+            }
         }
-        if (Math.abs(vector.x) > 2f && Math.abs(vector.y) < 10 && onGround) {
-            setState(Actions.SPRINT);
-            manAssetss.get(Actions.SPRINT).setTime(1/tmp);
-        }
-        if (Math.abs(vector.y) > 1.5 && !canJump) {
-            setState(Actions.JUMP);
-            manAssetss.get(Actions.JUMP).setTime(FPS);
-        }
+        return null;
     }
 
     public float setTime(float deltaTime) {
@@ -94,30 +130,30 @@ public class MainHero {
 
     public void setState(Actions state) {
         baseAnm = manAssetss.get(state).getAnimationRegion();
-        currentAction =state;
+        currentAction = state;
         switch (state) {
             case STAY:
-                manAssetss.get(state).setPlayMode(true);
-                manAssetss.get(state).setTime(FPS);
-                loop = true;
-                break;
             case SPRINT:
+            case JUMP_SHOT:
+            case SHOT:
                 manAssetss.get(state).setTime(FPS);
                 manAssetss.get(state).setPlayMode(true);
                 loop = true;
                 break;
             case JUMP:
-                manAssetss.get(state).setPlayMode(false);
+            case HIT:
+                manAssetss.get(state).setPlayMode(true);
                 loop = false;
                 break;
             default:
                 loop = true;
         }
     }
+
     public TextureRegion getFrame() {
         if (time > baseAnm.getAnimationDuration() && loop) time = 0;
         if (time > baseAnm.getAnimationDuration()) time = 0;
-        TextureRegion tr = manAssetss.get(currentAction).draw();//baseAnm.getKeyFrame(time);
+        TextureRegion tr = manAssetss.get(currentAction).draw();
         if (!tr.isFlipX() && dir == Dir.RIGHT) tr.flip(true, false);
         if (tr.isFlipX() && dir == Dir.LEFT) tr.flip(true, false);
         return tr;

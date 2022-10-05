@@ -34,8 +34,8 @@ public class GameOverScreen implements Screen {
         batch.end();
 
         if (Gdx.input.isTouched()) {
-            dispose();
             game.setScreen(new GameLelOne(game));
+            dispose();
         }
     }
 
@@ -64,5 +64,6 @@ public class GameOverScreen implements Screen {
         this.fon.dispose();
         this.batch.dispose();
         this.label.dispose();
+        game.dispose();
     }
 }
