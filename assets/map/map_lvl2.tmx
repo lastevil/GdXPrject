@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="99" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="104">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="99" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="106">
  <tileset firstgid="1" name="01_Mist" tilewidth="16" tileheight="16" tilecount="700" columns="35">
   <image source="Sprites/Parallax Forest Background - Blue/01_Mist.png" width="569" height="320"/>
   <tile id="350">
@@ -3508,6 +3508,26 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="14" name="chain">
+  <object id="104" name="chains" x="90" y="366">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="friction" type="float" value="1"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+   <polyline points="0,0 13,4 22.75,5.25 39.5,8.5 58,11.75 78.5,15.75 104.25,18.75"/>
+  </object>
+  <object id="105" name="chains" x="1075.33" y="99.6667">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="friction" type="float" value="1"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+   <polyline points="0,0 6,25.6667 10,41.6667 14,51.6667 19,60.3333 21,65.3333 21.3333,70.3333 20.6667,77.3333 19.3333,87.6667 16.6667,95.6667 10.6667,105.333 8.33333,119.333 8.66667,133.333 17,145.333 34.3333,149 48,145.667 57.6667,139.333 66,122.667 69,109.333 62.3333,88.3333 57.6667,70.6667 51.3333,63 51.3333,52.3333 50,42.6667 52,34 61.3333,20.6667 62.6667,10.6667 62.6667,-2"/>
+  </object>
+ </objectgroup>
  <objectgroup id="10" name="damage">
   <object id="47" name="plant" x="358.25" y="282" width="37.75" height="20">
    <properties>
@@ -3894,78 +3914,6 @@
     <property name="restitution" type="float" value="0"/>
    </properties>
   </object>
-  <object id="22" name="Land" x="1081.67" y="204.167" width="59.6667" height="39.6667">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="23" name="Land" x="1097.67" y="286.333" width="31.3333" height="6.66667">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="24" name="Land" x="1104.67" y="175.334" width="25" height="35.1667">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="25" name="Land" x="1129.83" y="185.667" width="11" height="31.3333">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="26" name="Land" x="1090" y="189.667" width="14.3333" height="20">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="27" name="Land" x="1091.33" y="150.333" width="36" height="30.3333">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="28" name="Land" x="1119" y="106.333" width="9.66667" height="64.3333">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="29" name="Land" x="1078" y="103.667" width="59.6667" height="27">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="30" name="Land" x="1084" y="131.667" width="42.3334" height="20">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
   <object id="39" name="Land" x="907.333" y="327.333" width="70" height="11">
    <properties>
     <property name="BodyType" value="StaticBody"/>
@@ -4015,190 +3963,6 @@
    </properties>
   </object>
   <object id="74" name="Border" x="18.6667" y="710.788" width="1529.94" height="46.2121">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="81" name="Land" x="91.663" y="368.391" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="82" name="Land" x="95.8641" y="369.098" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="83" name="Land" x="99.5163" y="369.576" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="84" name="Land" x="104.212" y="370.054" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="85" name="Land" x="108.168" y="371.054" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="86" name="Land" x="115.603" y="373.054" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="87" name="Land" x="111.603" y="371.924" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="88" name="Land" x="122.777" y="374.228" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="89" name="Land" x="119.516" y="373.359" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="90" name="Land" x="125.342" y="375.228" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="91" name="Land" x="129.734" y="376.185" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="92" name="Land" x="133.038" y="376.88" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="93" name="Land" x="137.397" y="377.318" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="94" name="Land" x="142.147" y="377.693" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="95" name="Land" x="147.209" y="378.068" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="96" name="Land" x="150.897" y="378.88" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="97" name="Land" x="155.772" y="380.193" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="98" name="Land" x="164.209" y="381.88" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="99" name="Land" x="160.334" y="381.068" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="100" name="Land" x="169.459" y="382.568" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="101" name="Land" x="173.084" y="383.693" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="102" name="Land" x="177.147" y="384.005" width="6.70652" height="6.23913">
-   <properties>
-    <property name="BodyType" value="StaticBody"/>
-    <property name="friction" type="float" value="1"/>
-    <property name="gravityScale" type="float" value="1"/>
-    <property name="restitution" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="103" name="Land" x="180.709" y="384.318" width="6.70652" height="6.23913">
    <properties>
     <property name="BodyType" value="StaticBody"/>
     <property name="friction" type="float" value="1"/>

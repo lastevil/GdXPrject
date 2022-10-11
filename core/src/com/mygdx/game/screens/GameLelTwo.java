@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -43,7 +44,10 @@ public class GameLelTwo implements Screen {
     private Body body;
     private int winCount;
 
-    public GameLelTwo(Game game, float hitPoint) {
+    private int lives;
+
+    public GameLelTwo(Game game, float hitPoint, int lives) {
+        this.lives = lives;
         winCount = 0;
         myInputProcessor = new MyInputProcessor();
         Gdx.input.setInputProcessor(myInputProcessor);
@@ -72,11 +76,16 @@ public class GameLelTwo implements Screen {
             projectPhysic.addObject(objects.get(i));
         }
         objects.clear();
+        Array<PolylineMapObject> shape = map.getLayers().get("chain").getObjects().getByType(PolylineMapObject.class);
+        for (int i = 0; i < shape.size; i++) {
+            projectPhysic.addObject(shape.get(i));
+        }
+
         objects.addAll(map.getLayers().get("damage").getObjects().getByType(RectangleMapObject.class));
         for (int i = 0; i < objects.size; i++) {
             projectPhysic.addDmgObject(objects.get(i));
         }
-        damage = (float)objects.get(0).getProperties().get("damage");
+        damage = (float) objects.get(0).getProperties().get("damage");
         body = projectPhysic.addObject((RectangleMapObject) map.getLayers().get("hero").getObjects().get("Hero"));
         body.setFixedRotation(true);
         hero = new MainHero(body);
@@ -102,8 +111,8 @@ public class GameLelTwo implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.DARK_GRAY);
 
-        camera.position.x = body.getPosition().x * projectPhysic.PPM +myInputProcessor.getCameraX();
-        camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
+        camera.position.x = body.getPosition().x * projectPhysic.PPM + myInputProcessor.getCameraX();
+        camera.position.y = body.getPosition().y * projectPhysic.PPM + myInputProcessor.getCameraY();
         camera.update();
 
         mapRenderer.setView(camera);
@@ -117,8 +126,7 @@ public class GameLelTwo implements Screen {
         }
         if (MyContactListener.onLand) {
             hero.setCanJump(true);
-        }
-        else {
+        } else {
             hero.setCanJump(false);
         }
         body.applyForceToCenter(vector, true);
@@ -136,7 +144,6 @@ public class GameLelTwo implements Screen {
         batch.begin();
 
         batch.draw(hero.getFrame(), tmp.x, tmp.y, tmp.width * ProjectPhysic.PPM, tmp.height * ProjectPhysic.PPM);
-        font.draw(batch, "HP:" + hero.getHit(0) + "\nОсталось: " + winCount, (int) (camera.position.x)-20, (int) (camera.position.y)+50);
         Array<Body> bodys = projectPhysic.getBodys("fireball");
         winCount = bodys.size;
         fireBall.setTime(delta);
@@ -153,7 +160,9 @@ public class GameLelTwo implements Screen {
         batch.end();
 
         mapRenderer.render(front);
-
+        batch.begin();
+        font.draw(batch, "HP:" + (int) hero.getHit(0) +" Жизней: " +lives+ "\nОсталось: " + winCount, (int) camera.position.x - Gdx.graphics.getWidth()/6, (int)  (camera.position.y + Gdx.graphics.getHeight()/7));
+        batch.end();
         for (Body bd : bodyToDelete) {
             projectPhysic.destroyBody(bd);
         }
@@ -163,12 +172,16 @@ public class GameLelTwo implements Screen {
         projectPhysic.debugDraw(camera);
 
 
-        if(MyContactListener.gameOver){
-            MyContactListener.gameOver = false;
-            MyContactListener.finishLvl = false;
-            MyContactListener.isDamage = false;
-            game.setScreen(new GameOverScreen(game));
-            dispose();
+        if (MyContactListener.gameOver) {
+            if (lives > 1) {
+                lives--;
+                MyContactListener.gameOver = false;
+                dispose();
+                game.setScreen(new GameLelTwo(game,100,lives));
+            } else {
+                game.setScreen(new GameOverScreen(game));
+                dispose();
+            }
         }
         if (MyContactListener.isDamage) {
             if (hero.getHit(1) < 1) {
@@ -176,7 +189,7 @@ public class GameLelTwo implements Screen {
                 dispose();
             }
         }
-        if(winCount==0 && MyContactListener.finishLvl){
+        if (winCount == 0 && MyContactListener.finishLvl) {
             MyContactListener.finishLvl = false;
             game.setScreen(new VictoryScreen(game));
             dispose();

@@ -46,7 +46,7 @@ public class MainMenu implements Screen {
             if (rectangle.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
                 sound.play();
                 dispose();
-                game.setScreen(new GameLelOne(game));
+                game.setScreen(new GameLelOne(game,3));
             }
         }
     }

@@ -63,6 +63,16 @@ public class MyContactListener implements ContactListener {
             onLand = true;
             isShocked = false;
         }
+        if (a.getUserData().equals("legs") && b.getUserData().equals("chain")) {
+            cnt++;
+            onLand = true;
+            isShocked = false;
+        }
+        if (b.getUserData().equals("legs") && a.getUserData().equals("chain")) {
+            cnt++;
+            onLand = true;
+            isShocked = false;
+        }
 
         if (a.getUserData().equals("legs") && b.getUserData().equals("WATER")) {
             gameOver = true;
@@ -100,6 +110,14 @@ public class MyContactListener implements ContactListener {
             onLand = false;
         }
         if (b.getUserData().equals("legs") && a.getUserData().equals("Land")) {
+            cnt--;
+            onLand = false;
+        }
+        if (a.getUserData().equals("legs") && b.getUserData().equals("chain")) {
+            cnt--;
+            onLand = false;
+        }
+        if (b.getUserData().equals("legs") && a.getUserData().equals("chain")) {
             cnt--;
             onLand = false;
         }

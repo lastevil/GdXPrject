@@ -1,6 +1,7 @@
 package com.mygdx.game.api;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -79,6 +80,37 @@ public class ProjectPhysic {
         }
 
         polygonShape.dispose();
+        return body;
+    }
+
+    public Body addObject(PolylineMapObject object) {
+        String type = (String) object.getProperties().get("BodyType");
+        BodyDef def = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        float[] tf = object.getPolyline().getTransformedVertices();
+        for (int i = 0; i < tf.length; i++) {
+            tf[i] /= PPM;
+        }
+        ChainShape chainShape = new ChainShape();
+        chainShape.createChain(tf);
+
+        if (type.equals("StaticBody")) def.type = BodyDef.BodyType.StaticBody;
+        if (type.equals("DynamicBody")) def.type = BodyDef.BodyType.DynamicBody;
+
+        def.gravityScale = (float) object.getProperties().get("gravityScale");
+
+        fdef.shape = chainShape;
+        if ( object.getProperties().get("friction") != null) fdef.friction = (float) object.getProperties().get("friction");
+        fdef.density = 1;
+        fdef.restitution = (float) object.getProperties().get("restitution");
+
+        String name = "chain";
+        Body body;
+        body = world.createBody(def);
+        body.setUserData(name);
+        body.createFixture(fdef).setUserData(name);
+
+        chainShape.dispose();
         return body;
     }
 

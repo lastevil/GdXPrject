@@ -33,7 +33,7 @@ public class VictoryScreen implements Screen {
         batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameLelOne(game));
+            game.setScreen(new GameLelOne(game, 3));
             dispose();
         }
     }

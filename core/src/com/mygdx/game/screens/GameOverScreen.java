@@ -19,6 +19,8 @@ public class GameOverScreen implements Screen {
         batch = new SpriteBatch();
         label = new Label(80);
         MyContactListener.isDamage=false;
+        MyContactListener.finishLvl = false;
+        MyContactListener.gameOver = false;
     }
     @Override
     public void show() {
@@ -34,7 +36,7 @@ public class GameOverScreen implements Screen {
         batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameLelOne(game));
+            game.setScreen(new GameLelOne(game, 3));
             dispose();
         }
     }

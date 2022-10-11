@@ -46,10 +46,12 @@ public class GameLelOne implements Screen {
     private final Label font;
     public static List<Bullet> bullets;
 
+    public int lives;
     private int winCount;
     private MyAtlasAnimation fireBall;
 
-    public GameLelOne(Game game) {
+    public GameLelOne(Game game, int lives) {
+        this.lives = lives;
         bullets = new ArrayList<>();
         winCount = 0;
         font = new Label(12);
@@ -116,8 +118,8 @@ public class GameLelOne implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-        camera.position.x = body.getPosition().x * projectPhysic.PPM +myInputProcessor.getCameraX();
-        camera.position.y = body.getPosition().y * projectPhysic.PPM+myInputProcessor.getCameraY();
+        camera.position.x = body.getPosition().x * projectPhysic.PPM + myInputProcessor.getCameraX();
+        camera.position.y = body.getPosition().y * projectPhysic.PPM + myInputProcessor.getCameraY();
         camera.update();
 
         mapRenderer.setView(camera);
@@ -130,12 +132,11 @@ public class GameLelOne implements Screen {
         }
         if (MyContactListener.onLand) {
             hero.setCanJump(true);
-        }
-        else {
+        } else {
             hero.setCanJump(false);
         }
         body.applyForceToCenter(vector, true);
-        Body tBody =  hero.setFPS(body.getLinearVelocity(), MyContactListener.onLand);
+        Body tBody = hero.setFPS(body.getLinearVelocity(), MyContactListener.onLand);
         if (tBody != null && MyContactListener.isShoot) {
             bullets.add(new Bullet(projectPhysic, tBody.getPosition().x, tBody.getPosition().y, hero.getDir()));
             vector.set(0, 0);
@@ -156,7 +157,7 @@ public class GameLelOne implements Screen {
         batch.begin();
 
         batch.draw(hero.getFrame(), tmp.x, tmp.y, tmp.width * ProjectPhysic.PPM, tmp.height * ProjectPhysic.PPM);
-        font.draw(batch, "HP:" + hero.getHit(0) + "\nОсталось: " + winCount, (int) (camera.position.x)-20, (int) (camera.position.y)+50);
+        font.draw(batch, "HP:" +(int) hero.getHit(0) +" Жизней: " +lives + "\nОсталось: " + winCount, (int) camera.position.x - Gdx.graphics.getWidth()/6, (int)  (camera.position.y + Gdx.graphics.getHeight()/7));
         Array<Body> bodys = projectPhysic.getBodys("fireball");
         winCount = bodys.size;
         fireBall.setTime(delta);
@@ -182,18 +183,23 @@ public class GameLelOne implements Screen {
         projectPhysic.step();
         projectPhysic.debugDraw(camera);
 
-        if(MyContactListener.gameOver){
-            dispose();
-            MyContactListener.gameOver = false;
-            MyContactListener.finishLvl = false;
-            game.setScreen(new GameOverScreen(game));
+        if (MyContactListener.gameOver) {
+            if (lives > 1) {
+                lives--;
+                MyContactListener.gameOver = false;
+                dispose();
+                game.setScreen(new GameLelOne(game,lives));
+            } else {
+                dispose();
+                game.setScreen(new GameOverScreen(game));
+            }
         }
 
-        if((winCount)==0 && MyContactListener.finishLvl){
+        if ((winCount) == 0 && MyContactListener.finishLvl) {
             music.stop();
             float heroHitPoint = hero.getHit(0);
             MyContactListener.finishLvl = false;
-            game.setScreen(new GameLelTwo(game,heroHitPoint));
+            game.setScreen(new GameLelTwo(game, heroHitPoint, lives));
             dispose();
         }
 
